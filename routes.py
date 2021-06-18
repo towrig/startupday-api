@@ -14,6 +14,13 @@ def consented(item):
     return item["company"]["answers"]["startupday2021_consent"]["data"] is "true"
 
 
+def parse_industries(arr):
+    result = ""
+    for row in arr:
+        result += row + ","
+    return result[:-1]
+
+
 def parse_data(data):
     for x in data:
         if not consented(x):
@@ -23,8 +30,16 @@ def parse_data(data):
         name = info["name"]
 
         if not startup_exists(name):
-            startup = Startup(name='')
+            startup = Startup(
+                name=name,
+                logo=info["logo"]["url"],
+                oneliner=info["answers"]["oneliner"]["data"],
+                stage=info["answers"]["company_stage"]["data"],
+                industry=parse_industries(info["answers"]["industries"]["data"])
+            )
             db.session.add(startup)
+
+    db.session.commit()
 
 
 @app.route('/update', methods=['GET'])
@@ -40,3 +55,9 @@ def update_records():
         print(response)
 
     return {"status": "OK"}
+
+
+@app.route('/', methods=['GET'])
+def update_records():
+    startups = Startup.query.all()
+    json.dumps({"startups": startups})
