@@ -3,7 +3,6 @@ from . import db
 
 
 class Startup(db.Model):
-
     __tablename__ = 'startups'
     id = db.Column(
         db.Integer,
@@ -12,33 +11,31 @@ class Startup(db.Model):
     name = db.Column(
         db.String(255),
         index=False,
-        unique=True,
         nullable=False
     )
     logo = db.Column(
         db.String(255),
         index=False,
-        unique=True,
         nullable=False
     )
     oneliner = db.Column(
         db.String(255),
         index=False,
-        unique=True,
         nullable=False
     )
     stage = db.Column(
         db.String(255),
         index=False,
-        unique=True,
         nullable=False
     )
     industry = db.Column(
         db.String(255),
         index=False,
-        unique=True,
         nullable=False
     )
 
     def __repr__(self):
-        return '<Startup {}>'.format(self.username)
+        return '<Startup {}>'.format(self.name)
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

@@ -7,11 +7,15 @@ import json as json
 
 
 def startup_exists(name):
+    # print("\n"+name+" results:")
+    # print(db.session.query(Startup.id).filter_by(name=name).first())
     return db.session.query(Startup.id).filter_by(name=name).first() is not None
 
 
 def consented(item):
-    return item["company"]["answers"]["startupday2021_consent"]["data"] is "true"
+    if "answers" not in item["company"]:
+        return False
+    return item["company"]["answers"]["startupday2021_consent"]["data"] == "true"
 
 
 def parse_industries(arr):
@@ -30,13 +34,17 @@ def parse_data(data):
         name = info["name"]
 
         if not startup_exists(name):
+            logo = ""
+            if info["logo"] is not None:
+                logo = info["logo"]["url"]
             startup = Startup(
                 name=name,
-                logo=info["logo"]["url"],
+                logo=logo,
                 oneliner=info["answers"]["oneliner"]["data"],
                 stage=info["answers"]["company_stage"]["data"],
                 industry=parse_industries(info["answers"]["industries"]["data"])
             )
+            print('Startup added: ' + name)
             db.session.add(startup)
 
     db.session.commit()
@@ -52,12 +60,13 @@ def update_records():
     if response["result"] == "OK" and "data" in response:
         parse_data(response["data"])
     else:
-        print(response)
+        return response
 
     return {"status": "OK"}
 
 
 @app.route('/', methods=['GET'])
-def update_records():
-    startups = Startup.query.all()
-    json.dumps({"startups": startups})
+def list_records():
+    startups = [x.as_dict() for x in Startup.query.all()]
+
+    return json.dumps({"startups": startups})
