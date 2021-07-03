@@ -1,5 +1,5 @@
 """Data models."""
-from . import db
+from app import db
 
 
 class Startup(db.Model):
