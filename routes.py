@@ -12,7 +12,6 @@ def update_records():
     else:
         return response
     resp = Response(json.dumps({"status": "OK"}))
-    resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Content-Type'] = 'application/json'
     return resp
 
@@ -21,6 +20,5 @@ def update_records():
 def list_records():
     startups = [x.as_dict() for x in Startup.query.all()]
     resp = Response(json.dumps({"startups": startups}))
-    resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Content-Type'] = 'application/json'
     return resp
