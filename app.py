@@ -6,7 +6,6 @@ db = SQLAlchemy()
 
 
 def create_app():
-    """Construct the core application."""
     app = Flask(__name__, instance_relative_config=False)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 
@@ -14,7 +13,6 @@ def create_app():
 
     with app.app_context():
         import routes
-
         db.create_all()  # Create database tables for our data models
 
         return app
