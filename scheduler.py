@@ -7,8 +7,8 @@ def update_task(app):
         from services import request_data, parse_data
         response = request_data()
 
-        if response["result"] == "OK" and "data" in response:
-            parse_data(response["data"])
+        if response is not None and isinstance(response, list):
+            parse_data(response)
         else:
             print("--UPDATE FAILED--")
 

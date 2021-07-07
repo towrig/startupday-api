@@ -7,8 +7,8 @@ import services
 @app.route('/update', methods=['GET'])
 def update_records():
     response = services.request_data()
-    if response["result"] == "OK" and "data" in response:
-        services.parse_data(response["data"])
+    if response is not None and isinstance(response, list):
+        services.parse_data(response)
     else:
         return response
     resp = Response(json.dumps({"status": "OK"}))
