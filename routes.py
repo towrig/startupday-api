@@ -21,9 +21,16 @@ def list_records():
     industry = request.args.get('industry', default="", type=str)
     stage = request.args.get('stage', default="", type=str)
 
-    #filtered = filter(lambda score: score >= 70, scores)
+    if stage != "":
+        startups = services.filter_by_stage(stage)
+    else:
+        startups = [x.as_dict() for x in Startup.query.all()]
 
-    startups = [x.as_dict() for x in Startup.query.all()]
-    resp = Response(json.dumps({"startups": startups}))
+
+    resp = Response(json.dumps({
+        "startups": startups,
+        "industries": services.get_industries(),
+        "stages": services.get_stages(),
+    }))
     resp.headers['Content-Type'] = 'application/json'
     return resp

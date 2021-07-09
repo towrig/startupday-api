@@ -41,8 +41,28 @@ def parse_data(data):
             stage=x["answers"]["company_stage"],
             industry=parse_industries(x["answers"]["industries"])
         )
-        print('Startup added: ' + name)
         db.session.add(startup)
 
     db.session.commit()
+
+
+def filter_by_stage(stage):
+    return [x.as_dict() for x in Startup.query.filter(Startup.stage.is_(stage)).all()]
+
+
+def get_industries():
+    results = Startup.query.with_entities(Startup.industry).all()
+    result_list = []
+
+    for x in results:
+        for i in x[0].split(","):
+            if i not in result_list:
+                result_list.append(i.strip())
+
+    return result_list
+
+
+def get_stages():
+    results = Startup.query.with_entities(Startup.stage).distinct(Startup.stage).all()
+    return [x[0] for x in results]
 
