@@ -33,7 +33,6 @@ def list_records():
     if country != "":
         startups = [x for x in startups if x["country"] == country]
 
-
     resp = Response(json.dumps({
         "startups": startups,
         "industries": services.get_industries(),
