@@ -39,7 +39,8 @@ def parse_data(data):
             logo=logo,
             oneliner=x["answers"]["oneliner"],
             stage=x["answers"]["company_stage"],
-            industry=parse_industries(x["answers"]["industries"])
+            industry=parse_industries(x["answers"]["industries"]),
+            country=x["answers"]["country"]
         )
         db.session.add(startup)
 

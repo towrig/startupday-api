@@ -33,6 +33,11 @@ class Startup(db.Model):
         index=False,
         nullable=False
     )
+    country = db.Column(
+        db.String(255),
+        index=False,
+        nullable=False
+    )
 
     def __repr__(self):
         return '<Startup {}>'.format(self.name)

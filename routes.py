@@ -18,13 +18,20 @@ def update_records():
 
 @app.route('/', methods=['GET'])
 def list_records():
-    industry = request.args.get('industry', default="", type=str)
     stage = request.args.get('stage', default="", type=str)
+    industry = request.args.get('industry', default="", type=str)
+    country = request.args.get('country', default="", type=str)
 
     if stage != "":
         startups = services.filter_by_stage(stage)
     else:
         startups = [x.as_dict() for x in Startup.query.all()]
+
+    if industry != "":
+        startups = [x for x in startups if x["industry"] == industry]
+
+    if country != "":
+        startups = [x for x in startups if x["country"] == country]
 
 
     resp = Response(json.dumps({
