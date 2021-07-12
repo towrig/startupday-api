@@ -38,6 +38,7 @@ def list_records():
         "startups": startups,
         "industries": services.get_industries(),
         "stages": services.get_stages(),
+        "countries": services.get_countries()
     }))
     resp.headers['Content-Type'] = 'application/json'
     return resp

@@ -67,3 +67,6 @@ def get_stages():
     results = Startup.query.with_entities(Startup.stage).distinct(Startup.stage).all()
     return [x[0] for x in results]
 
+def get_countries():
+    results = Startup.query.with_entities(Startup.country).distinct(Startup.country).all()
+    return [x[0] for x in results]
