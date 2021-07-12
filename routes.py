@@ -28,7 +28,7 @@ def list_records():
         startups = [x.as_dict() for x in Startup.query.all()]
 
     if industry != "":
-        startups = [x for x in startups if x["industry"] == industry]
+        startups = [x for x in startups if industry in x["industry"].split(",")]
 
     if country != "":
         startups = [x for x in startups if x["country"] == country]
