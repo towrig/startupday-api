@@ -17,6 +17,6 @@ def update_task(app):
 
 def init(app):
     sched = BackgroundScheduler(daemon=True)
-    sched.add_job(lambda: update_task(app), 'interval', hours=12)
+    sched.add_job(lambda: update_task(app), 'interval', hours=2)
     update_task(app)
     sched.start()
