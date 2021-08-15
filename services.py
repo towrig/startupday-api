@@ -14,8 +14,9 @@ def startup_exists(name):
 
 
 def consented(item):
-    if "answers" not in item:
+    if "answers" not in item or "startupday2021_consent" not in item["answers"]:
         return False
+
     return item["answers"]["startupday2021_consent"] == "Yes"
 
 
